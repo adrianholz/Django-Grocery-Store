@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+<h1 class="heading">Product List</h1>
+
+<div class="products-inner">
+  <ul>
+    {% for product in products %}
+    <li class="product">
+      <a href="{% url 'product_detail' product.product_id %}">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h2>{{ product.name }}</h2>
+        <span>${{ product.price }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

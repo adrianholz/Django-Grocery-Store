@@ -1,0 +1,12 @@
+<h1>Your Basket</h1>
+{% if basket %}
+  <ul>
+    {% for item in basket.items.all %}
+      <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.product.price }}</li>
+    {% endfor %}
+  </ul>
+  <p>Total: ${{ basket.items.all|sum:"product.price" }}</p>
+  <p>Status: {{ basket.approved|yesno:"Approved,Pending" }}</p>
+{% else %}
+  <p>Your basket is empty.</p>
+{% endif %}

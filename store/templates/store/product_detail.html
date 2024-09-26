@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="heading">{{ product.name }}</h1>
+<div class="detail-inner">
+  <img src="{{ product.image.url }}" alt="{{ product.name }}">
+  <div class="product-detail">
+    <h1>{{ product.name }}</h1>
+    <p class="price">${{ product.price }}</p>
+    <form action="{% url 'add_to_basket' product.product_id %}" method="POST">
+      {% csrf_token %}
+      <input type="number" name="quantity" id="quantity" value="1" min="1" required>
+      <button type="submit" {% if not user.is_authenticated %}disabled{% endif %}>
+        Add to Basket
+      </button>
+    </form>
+    {% if not user.is_authenticated %}
+    <p>Please <a href="{% url 'login' %}">log in</a> to add items to your basket.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

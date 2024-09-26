@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="heading">Welcome {{ request.user.username }}</h1>
+
+<div class="account-inner">
+  <div class="basket">
+    <h2>Your Basket</h2>
+    {% if basket %}
+    <ul>
+      {% for item in basket.items.all %}
+      <li>
+        <div>
+          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+          <h3><span>x{{ item.quantity }}</span> {{ item.product.name }}</h3>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% if basket.approved %}
+    <!-- Show "Buy" button if the basket is approved -->
+    <p>Your basket was approved.</p>
+    <form method="post" action="{% url 'buy_basket' basket.id %}">
+      {% csrf_token %}
+      <button type="submit" class="buy">Buy</button>
+    </form>
+    {% else %}
+    <p>Your basket is not yet approved by the staff.</p>
+    {% endif %}
+
+    {% else %}
+    <p>Your basket is empty.</p>
+    {% endif %}
+  </div>
+
+  <div class="purchase-history">
+    <h2>Your Purchase History</h2>
+    <ul>
+      {% for purchase in purchases %}
+      <li>Purchase on {{ purchase.purchased_at }} - Basket ID: {{ purchase.basket.id }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
